@@ -61,6 +61,18 @@ function revString(str) {
 /** gatherStrings: given an object, return an array of all of the string values. */
 
 function gatherStrings(obj) {
+  let strings = [];
+
+
+  function _gatherStrings(keys){
+    if (keys.length === 0) return;
+    if (typeof obj[keys[0]] === "string") strings.push(obj[keys[0]]);
+    if (typeof obj[keys[0]] === "object") strings.push(...gatherStrings(obj[keys[0]]));
+    _gatherStrings(keys.slice(1));
+  }
+  
+  _gatherStrings(Object.keys(obj));
+  return strings;
 
 }
 
@@ -68,6 +80,19 @@ function gatherStrings(obj) {
  * return the index of that value (or -1 if val is not present). */
 
 function binarySearch(arr, val) {
+
+  function _binarySearch(arr, val, left, right){
+    
+    let middle = Math.floor((left + right)/2);
+    if(arr[middle] === val) return middle;
+    else if (left === right) return -1;
+    if ( arr[middle] > val) return _binarySearch(arr, val, left, middle-1);
+    else if ( arr[middle] < val) return _binarySearch(arr, val, middle+1, right);
+
+  }
+
+  return _binarySearch(arr, val, 0, arr.length-1);
+  
 
 }
 
